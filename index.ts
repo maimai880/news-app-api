@@ -19,7 +19,7 @@ app.get("/callapi", async (req, res) => {
         params: {
           apikey: process.env.API_KEY,
           country: req.query.country,
-          q: encodeURI(String(req.query.q) || ""),
+          q: req.query.q
         }
       }
     )
