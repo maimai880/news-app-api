@@ -6,8 +6,9 @@ require("dotenv").config()
 const app: Application = express()
 const PORT = process.env.PORT || 3001
 
-// 外部APIを呼び出すエンドポイント
-app.get("/", async (req, res) => {
+app.use(express.json())
+
+app.get("*", async (req, res) => {
   try {
     const response = await axios.get(
       "https://gnews.io/api/v4/top-headlines",
