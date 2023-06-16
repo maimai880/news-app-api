@@ -1,15 +1,10 @@
 import express, {Application} from "express"
 
 const axios = require("axios")
-const path = require("path")
 require("dotenv").config()
 
 const app: Application = express()
 const PORT = process.env.PORT || 3001
-
-// 静的ファイルを提供する
-app.use(express.static(path.join(__dirname, "dist")))
-
 // 外部APIを呼び出すエンドポイント
 app.get("/callapi", async (req, res) => {
   try {
@@ -24,6 +19,7 @@ app.get("/callapi", async (req, res) => {
       }
     )
 
+    res.setHeader("access-control-allow-origin", process.env.FRONTEND_URL || "")
     res.json(response.data)
   } catch (e) {
     if (e instanceof Error) {
@@ -32,11 +28,6 @@ app.get("/callapi", async (req, res) => {
       res.status(500).json({error: "An unknown error occurred."})
     }
   }
-})
-
-// すべてのルートでWebアプリを返す
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"))
 })
 
 // サーバーを起動する
