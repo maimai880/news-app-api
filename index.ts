@@ -5,8 +5,9 @@ require("dotenv").config()
 
 const app: Application = express()
 const PORT = process.env.PORT || 3001
+
 // 外部APIを呼び出すエンドポイント
-app.get("/callapi", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
     const response = await axios.get(
       "https://gnews.io/api/v4/top-headlines",
@@ -19,7 +20,7 @@ app.get("/callapi", async (req, res) => {
       }
     )
 
-    res.setHeader("access-control-allow-origin", process.env.FRONTEND_URL || "")
+    res.set("access-control-allow-origin", process.env.FRONTEND_URL || "")
     res.json(response.data)
   } catch (e) {
     if (e instanceof Error) {
