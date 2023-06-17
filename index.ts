@@ -1,5 +1,6 @@
 import express, {Application} from "express"
 import cors from "cors"
+import rateLimit from "express-rate-limit"
 import axios from "axios"
 
 require("dotenv").config()
@@ -12,6 +13,10 @@ app.use(cors({
   origin: process.env.FRONTEND_URL || "",
   credentials: true,
   optionsSuccessStatus: 200
+}))
+app.use(rateLimit({
+  windowMs: 10 * 1000,
+  max: 10
 }))
 
 app.get("*", async (req, res) => {
