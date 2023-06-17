@@ -1,12 +1,18 @@
 import express, {Application} from "express"
+import cors from "cors"
+import axios from "axios"
 
-const axios = require("axios")
 require("dotenv").config()
 
 const app: Application = express()
 const PORT = process.env.PORT || 3001
 
 app.use(express.json())
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "",
+  credentials: true,
+  optionsSuccessStatus: 200
+}))
 
 app.get("*", async (req, res) => {
   try {
@@ -21,7 +27,6 @@ app.get("*", async (req, res) => {
       }
     )
 
-    res.set("access-control-allow-origin", process.env.FRONTEND_URL || "")
     res.json(response.data)
   } catch (e) {
     if (e instanceof Error) {
